@@ -4,7 +4,7 @@ const { PermissionError } = require('../errors/permissionError');
 const { ValidationError } = require('../errors/validationError');
 
 const getMovies = (req, res, next) => {
-  Movie.find({})
+  Movie.find({ owner: req.user._id })
     .then((movies) => {
       res.send(movies);
     })
@@ -33,7 +33,7 @@ const createMovie = (req, res, next) => {
     year,
     description,
     image,
-    trailer,
+    trailerLink: trailer,
     nameRU,
     nameEN,
     thumbnail,

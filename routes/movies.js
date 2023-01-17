@@ -4,7 +4,7 @@ const {
   getMovies, createMovie, deleteMovie,
 } = require('../controllers/movies');
 const auth = require('../middlewares/auth');
-const { UrlCheckRegex } = require('../constants/validate');
+const { UrlCheckRegex, OnlyEN, OnlyRU } = require('../constants/validate');
 
 router.get('/', auth, getMovies);
 router.delete('/:id', auth, celebrate({
@@ -20,13 +20,11 @@ router.post('/', auth, celebrate({
     year: Joi.string().required(),
     description: Joi.string().required(),
     image: Joi.string().required().pattern(UrlCheckRegex),
-    trailerLink: Joi.string().required().pattern(UrlCheckRegex),
+    trailer: Joi.string().required().pattern(UrlCheckRegex),
     thumbnail: Joi.string().required().pattern(UrlCheckRegex),
-    owner: Joi.string().required().alphanum().hex()
-      .length(24),
     movieId: Joi.string().required(),
-    nameRU: Joi.string().required(),
-    nameEN: Joi.string().required(),
+    nameRU: Joi.string().required().pattern(OnlyRU),
+    nameEN: Joi.string().required().pattern(OnlyEN),
   }),
 }), createMovie);
 
