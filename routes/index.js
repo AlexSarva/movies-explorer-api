@@ -8,7 +8,7 @@ const { errors } = require('celebrate');
 const corsCustom = require('../middlewares/cors');
 const auth = require('../middlewares/auth');
 const errorHandler = require('../middlewares/errorHandler');
-const { NotFoundError } = require('../errors/notFoundError');
+const { PAGE_NOT_FOUND_ERROR } = require('../errors/errors');
 const { requestLogger, errorLogger } = require('../middlewares/logger');
 
 const app = express();
@@ -35,7 +35,7 @@ app.use('/users', require('./users'));
 app.use('/movies', require('./movies'));
 
 app.use('*', auth, () => {
-  throw new NotFoundError('Страница не найдена');
+  throw PAGE_NOT_FOUND_ERROR;
 });
 
 app.use(errorLogger);

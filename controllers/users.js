@@ -1,16 +1,14 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
-const { NotFoundError } = require('../errors/notFoundError');
-const { ConflictError } = require('../errors/conflictError');
-const { ValidationError } = require('../errors/validationError');
+const { USER_NOT_FOUND_ERROR, VALIDATION_ERROR, USER_EXIST_ERROR } = require('../errors/errors');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 const TOKEN = NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret';
 
 const getMeInfo = (req, res, next) => {
   User.findById(req.user._id)
-    .orFail(new NotFoundError('Пользователь по указанному _id не найден.'))
+    .orFail(USER_NOT_FOUND_ERROR)
     .then((user) => {
       res.send(user);
     })
@@ -54,11 +52,11 @@ const createUser = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new ValidationError('Переданы некорректные данные.'));
+        next(VALIDATION_ERROR);
         return;
       }
       if (err.code === 11000) {
-        next(new ConflictError('Пользователь с таким email уже существует'));
+        next(USER_EXIST_ERROR);
         return;
       }
       next(err);
@@ -72,17 +70,17 @@ const editUserInfo = (req, res, next) => {
     new: true,
     runValidators: true,
   })
-    .orFail(new NotFoundError('Пользователь по указанному _id не найден.'))
+    .orFail(USER_NOT_FOUND_ERROR)
     .then((user) => {
       res.send(user);
     })
     .catch((err) => {
       if (err.code === 11000) {
-        next(new ConflictError('Пользователь с таким email уже существует'));
+        next(USER_EXIST_ERROR);
         return;
       }
       if (err.name === 'ValidationError' || err.name === 'CastError') {
-        next(new ValidationError('Переданы некорректные данные.'));
+        next(VALIDATION_ERROR);
         return;
       }
       next(err);

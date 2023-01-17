@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
-const { AuthorizationError } = require('../errors/authorizationError');
+const { USER_AUTH_ERROR } = require('../errors/errors');
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -31,13 +31,13 @@ function findUser(email, password) {
     .select('+password')
     .then((user) => {
       if (!user) {
-        return Promise.reject(new AuthorizationError('Неправильные почта или пароль'));
+        return Promise.reject(USER_AUTH_ERROR);
       }
 
       return bcrypt.compare(password, user.password)
         .then((matched) => {
           if (!matched) {
-            return Promise.reject(new AuthorizationError('Неправильные почта или пароль'));
+            return Promise.reject(USER_AUTH_ERROR);
           }
 
           return user;
