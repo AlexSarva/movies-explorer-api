@@ -1,2 +1,17 @@
-# movies-explorer-api
-Backend for movies project
+# Проект Movies бэкенд
+
+## Директории
+
+`/middlewares` — папка с файлами обработки маршрутов
+`/routes` — папка с файлами роутера  
+`/controllers` — папка с файлами контроллеров пользователя и фильмов   
+`/models` — папка с файлами описания схем пользователя и фильма  
+`/errors` — папка с файлами ошибок
+
+## Запуск проекта
+
+`npm run start` — запускает сервер   
+`npm run dev` — запускает сервер с hot-reload
+
+## Публичный сервер
+* Backend  https://api.movies.sarva.nomoredomains.rocks
