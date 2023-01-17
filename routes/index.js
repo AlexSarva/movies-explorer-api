@@ -36,12 +36,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(requestLogger);
 
-app.get('/crash-test', (req, res, next) => {
-  setTimeout(() => {
-    next(new Error('Сервер сейчас упадёт'));
-  }, 0);
-});
-
 app.use('/', require('./auth'));
 
 app.use('/users', require('./users'));
