@@ -67,8 +67,8 @@ const createUser = (req, res, next) => {
 
 const editUserInfo = (req, res, next) => {
   const id = req.user._id;
-  const { name, about } = req.body;
-  User.findByIdAndUpdate(id, { name, about }, {
+  const { name, email } = req.body;
+  User.findByIdAndUpdate(id, { name, email }, {
     new: true,
     runValidators: true,
   })
@@ -77,6 +77,10 @@ const editUserInfo = (req, res, next) => {
       res.send(user);
     })
     .catch((err) => {
+      if (err.code === 11000) {
+        next(new ConflictError('Пользователь с таким email уже существует'));
+        return;
+      }
       if (err.name === 'ValidationError' || err.name === 'CastError') {
         next(new ValidationError('Переданы некорректные данные.'));
         return;
