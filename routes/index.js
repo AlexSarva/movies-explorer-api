@@ -7,7 +7,7 @@ const cookieParser = require('cookie-parser');
 const { errors } = require('celebrate');
 const corsCustom = require('../middlewares/cors');
 const auth = require('../middlewares/auth');
-const { InternalServerError } = require('../errors/internalServerError');
+const errorHandler = require('../middlewares/errorHandler');
 const { NotFoundError } = require('../errors/notFoundError');
 const { requestLogger, errorLogger } = require('../middlewares/logger');
 
@@ -41,20 +41,6 @@ app.use('*', auth, () => {
 app.use(errorLogger);
 
 app.use(errors());
-app.use((err, req, res, next) => {
-  const {
-    statusCode, message,
-  } = err;
-
-  const internalServerError = new InternalServerError('На сервере произошла ошибка');
-
-  res.status(!statusCode ? 500 : statusCode).send({
-    message: statusCode !== 500
-      ? message
-      : internalServerError.message,
-  });
-
-  next();
-});
+app.use(errorHandler);
 
 module.exports = app;
