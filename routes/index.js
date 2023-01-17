@@ -23,11 +23,11 @@ const limiter = rateLimit({
 app.use(corsCustom);
 
 app.use(helmet());
-app.use(limiter);
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(requestLogger);
+app.use(limiter);
 
 app.use('/', require('./auth'));
 
