@@ -18,8 +18,8 @@ const addMovieValidation = celebrate({
     trailer: Joi.string().required().pattern(UrlCheckRegex),
     thumbnail: Joi.string().required().pattern(UrlCheckRegex),
     movieId: Joi.number().required(),
-    nameRU: Joi.string().required().regex(OnlyRU),
-    nameEN: Joi.string().required().regex(OnlyEN),
+    nameRU: Joi.string().required().pattern(OnlyRU),
+    nameEN: Joi.string().required().pattern(OnlyEN),
   }),
 });
 
