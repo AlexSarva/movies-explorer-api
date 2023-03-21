@@ -1,6 +1,6 @@
 const allowedCors = [
-  'https://sarva.students.nomoredomains.rocks',
-  'http://sarva.students.nomoredomains.rocks',
+  'https://movies.sarva.nomoredomains.rocks',
+  'http://movies.sarva.nomoredomains.rocks',
   'localhost:3001',
   'http://localhost:3001',
   'localhost:3000',
